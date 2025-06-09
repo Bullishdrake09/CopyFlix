@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CopyFlix</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="icon" href="/static/favicon.ico">
+</head>
+<body>
+    <div id="homepage">
+        <header class="main-header" role="navigation">
+        <div class="logo" id="logo">CopyFlix</div>
+        <nav class="nav">
+            <a href="#" class="nav-link active">Home</a>
+            <a href="#" class="nav-link">TV Shows</a>
+            <a href="#" class="nav-link">Movies</a>
+            <a href="#" class="nav-link">New &amp; Popular</a>
+            <a href="#" class="nav-link">My List</a>
+        </nav>
+        <div class="user-controls">
+            <input type="text" id="pageSearchInput" placeholder="Search shows..." aria-label="Search shows">
+            {% if session.username %}
+            <span class="username">Logged in as: {{ session.username }}</span>
+            <a href="{{ url_for('logout') }}" class="nav-link">Logout</a>
+            {% else %}
+            <a href="{{ url_for('login') }}" class="nav-link">Login</a>
+            {% endif %}
+        </div>
+        </header>
+
+
+        <section class="billboard" style="background-image: url(https://occ-0-8407-90.1.nflxso.net/dnm/api/v6/Z-WHgqd_TeJxSuha8aZ5WpyLcX8/AAAABUZRetY0NwWkIBQ-9QF0PLIDcuUCPKgno_8riE_In9tHRgqqTTSG-vGiP5ctXrVMY4PESkV5-x1LE_MGn32QtUZfnoNR4Hx9GoRI.jpg?r=9fa);">
+            <div class="billboard-content">
+                <h1 class="billboard-title">Watch Something Amazing</h1>
+                <p class="billboard-subtitle">Hooray! Your CopyWatch subscription request has been accepted! Explore our library of shows, movies, and originals.</p>
+            </div>
+        </section>
+
+        <div id="dynamic-content-sections">
+            </div>
+
+        <section class="genres">
+            <h2 class="row-title">Browse by Genre</h2>
+            <div class="genre-list">
+                <a href="#" class="genre-tag">Action</a>
+                <a href="#" class="genre-tag">Comedy</a>
+                <a href="#" class="genre-tag">Drama</a>
+                <a href="#" class="genre-tag">Sci-Fi</a>
+                <a href="#" class="genre-tag">Horror</a>
+            </div>
+        </section>
+
+        <footer class="footer">
+            <div class="footer-links">
+                <a href="#">FAQ</a>
+                <a href="#">Help Center</a>
+                <a href="#">Terms of Use</a>
+                <a href="#">Privacy</a>
+            </div>
+            <div class="copyright">
+                © 2025 CopyFlix. All rights reserved.
+            </div>
+        </footer>
+    </div>
+
+    <div class="player" id="videoPlayer">
+        <button class="back-button" id="backButton">
+            <svg viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6" stroke="white" stroke-width="2" fill="none"/></svg>
+        </button>
+
+        <div class="video-wrapper">
+            <video id="video" preload="metadata" playsinline crossorigin="anonymous"></video>
+            <div id="overlayIcon">▶️</div>
+            <div id="loadingSpinner"></div>
+        </div>
+
+        <div id="subtitleDisplay"></div>
+        <div id="subtitleConfirmation" class="confirmation-message"></div>
+
+        <button class="next-episode-btn" id="nextEpisodeBtn">Next Episode ▶️</button>
+
+        <div class="controls-top">
+            <svg class="icon" viewBox="0 0 24 24"><path d="M11 19V5l-9 7 9 7zm2-7h8" stroke="white" stroke-width="2" fill="none"/></svg>
+            <svg class="flag" viewBox="0 0 24 24"><path d="M6 4v16"/><path d="M6 4c4 0 4 3 8 3s4-3 8-3v8c-4 0-4 3-8 3s-4-3-8-3"/></svg>
+        </div>
+
+        <div class="progress-container" id="progress-container">
+            <div class="progress" id="progress"></div>
+            <div class="thumb" id="thumb"></div>
+        </div>
+        <div class="time" id="time">0:00</div>
+
+        <div class="controls-middle">
+            <div class="left-controls">
+                <svg id="playpause" class="icon" viewBox="0 0 24 24"><path d="M8 5v14l11-7-11-7z" fill="white"/></svg>
+                <svg id="rewind" class="icon" viewBox="0 0 24 24"><path d="M11 19V5l-9 7 9 7zm2-7h8" stroke="white" stroke-width="2" fill="none"/></svg>
+                <svg id="forward" class="icon" viewBox="0 0 24 24"><path d="M13 5v14l9-7-9-7zm-2 0h-8" stroke="white" stroke-width="2" fill="none"/></svg>
+                <svg id="mute" class="icon" viewBox="0 0 24 24"><path d="M5 9v6h4l5 5V4L9 9H5z" stroke="white" stroke-width="2" fill="none"/></svg>
+                <div class="volume-container" id="volume-container">
+                    <div class="volume-bar" id="volume-bar"></div>
+                    <div class="volume-thumb" id="volume-thumb"></div>
+                </div>
+            </div>
+
+            <div class="center-title" id="videoTitle">Title</div>
+
+            <div class="right-controls">
+                <svg id="pip" class="icon" viewBox="0 0 24 24"><path d="M19 7H5a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2zm-1 11H6V9h12v9z" stroke="white" stroke-width="2" fill="none"/></svg>
+                <svg id="cc" class="icon" viewBox="0 0 24 24"><text x="4" y="16" fill="white" font-size="14" font-family="sans-serif">CC</text></svg>
+                <svg id="speed" class="icon" viewBox="0 0 24 24"><text x="4" y="16" fill="white" font-size="14" font-family="sans-serif">1x</text></svg>
+                <svg id="fullscreen" class="icon" viewBox="0 0 24 24"><path d="M4 4h6M20 4h-6M4 20h6M20 20h-6" stroke="white" stroke-width="2"/></svg>
+            </div>
+        </div>
+
+        <input type="file" id="subtitleFile" accept=".srt">
+    </div>
+
+    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+</body>
+</html>

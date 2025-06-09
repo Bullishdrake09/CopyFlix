@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Subscription Required</title>
+    <link href="https://fonts.googleapis.com/css2?family=Netflix+Sans:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        /* Basic Reset & Body Styles */
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Netflix Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+            background-color: #141414; /* Netflix dark background */
+            color: #E5E5E5; /* Light grey text */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            text-align: center;
+        }
+
+        /* Container Styling */
+        .subscription-required-container {
+            background-color: #1F1F1F; /* Slightly lighter dark background for the box */
+            padding: 40px 50px;
+            border-radius: 8px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.5); /* Subtle shadow */
+            max-width: 500px;
+            width: 90%;
+        }
+
+        /* Heading Styling */
+        h1 {
+            color: #E50914; /* Netflix red */
+            font-size: 2.5em;
+            margin-bottom: 20px;
+            font-weight: 700;
+        }
+
+        /* Paragraph Text */
+        p {
+            font-size: 1.1em;
+            line-height: 1.6;
+            margin-bottom: 25px;
+        }
+
+        strong {
+            color: #E5E5E5;
+            font-weight: 700;
+        }
+
+        /* Flash Messages */
+        .flashes {
+            list-style: none;
+            padding: 0;
+            margin: -10px 0 20px 0;
+        }
+
+        .flashes li {
+            background-color: #E50914; /* Netflix red for error messages */
+            color: #FFFFFF;
+            padding: 10px 15px;
+            border-radius: 4px;
+            margin-bottom: 10px;
+            font-size: 0.95em;
+            font-weight: 700;
+        }
+
+        .flashes li.success {
+            background-color: #28A745; /* Green for success messages */
+        }
+
+        /* Netflix Flat Button Styling */
+        .nf-flat-button {
+            display: inline-block;
+            padding: 12px 25px;
+            border-radius: 4px;
+            text-decoration: none;
+            font-size: 1.1em;
+            font-weight: 700;
+            transition: background-color 0.3s ease, color 0.3s ease;
+            margin-top: 10px;
+        }
+
+        .nf-flat-button-play {
+            background-color: #E50914; /* Netflix red button */
+            color: #FFFFFF;
+            border: none;
+        }
+
+        .nf-flat-button-play:hover {
+            background-color: #F40612; /* Slightly brighter red on hover */
+            cursor: pointer;
+        }
+
+        /* Username and Logout Link */
+        .username {
+            display: block;
+            margin-top: 30px;
+            font-size: 0.9em;
+            color: #A0A0A0; /* Lighter grey for ancillary text */
+        }
+
+        .nav-link {
+            color: #E5E5E5; /* White for links */
+            text-decoration: none;
+            font-size: 0.9em;
+            margin-top: 10px;
+            display: inline-block;
+            transition: color 0.3s ease;
+        }
+
+        .nav-link:hover {
+            color: #B3B3B3; /* Lighter grey on hover */
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="subscription-required-container">
+        <h1>Subscription Required</h1>
+        {% with messages = get_flashed_messages(with_categories=true) %}
+          {% if messages %}
+            <ul class="flashes">
+            {% for category, message in messages %}
+              <li class="{{ category }}">{{ message }}</li>
+            {% endfor %}
+            </ul>
+          {% endif %}
+        {% endwith %}
+        <p>You need an active <strong>CopyWatch</strong> subscription to access that page.</p>
+        <p>
+            {% if session.username %}
+                <a href="{{ url_for('request_subscription') }}" class="nf-flat-button nf-flat-button-play">
+                    Request CopyWatch Subscription
+                </a>
+            {% else %}
+                <a href="{{ url_for('login') }}" class="nf-flat-button nf-flat-button-play">
+                    Log in to Request Subscription
+                </a>
+            {% endif %}
+        </p>
+        <span class="username">Logged in as: {{ session.username }}</span>
+        <a href="{{ url_for('logout') }}" class="nav-link">Logout</a>
+    </div>
+</body>
+</html>

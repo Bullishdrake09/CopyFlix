@@ -1,0 +1,138 @@
+body {
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    background-color: #141414; /* Fallback dark background */
+    color: #fff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    margin: 0;
+    padding: 20px;
+    box-sizing: border-box;
+
+    /* --- Background Image Properties --- */
+    background-image: url('https://assets.nflxext.com/ffe/siteui/vlv3/6863f6e8-d419-414d-b5b9-7ef657e67ce4/web/BE-nl-20250602-TRIFECTA-perspective_ddc41068-8e40-43ad-9fc2-169787888150_large.jpg');
+    background-size: cover; /* This makes the background image cover the entire element */
+    background-position: center; /* Centers the image */
+    background-repeat: no-repeat; /* Prevents the image from repeating */
+    background-attachment: fixed; /* Ensures the background stays in place when scrolling */
+    /* --- End Background Image Properties --- */
+}
+
+main {
+    background-color: rgba(0, 0, 0, 0.75); /* Semi-transparent black background for the form */
+    padding: 60px 68px 40px;
+    border-radius: 4px;
+    width: 100%;
+    max-width: 450px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    z-index: 1; /* Ensure the form is above the background image */
+    position: relative; /* Needed for z-index to work */
+}
+
+h1 {
+    font-size: 2em;
+    margin-bottom: 28px;
+    text-align: left; /* Align to left like Netflix */
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px; /* Spacing between form elements */
+}
+
+label {
+    display: block;
+    margin-bottom: -10px; /* Adjust for better spacing with input */
+}
+
+input[type="text"],
+input[type="password"] {
+    background-color: #333;
+    border: none;
+    border-radius: 4px;
+    color: #fff;
+    padding: 16px 20px;
+    width: 100%;
+    font-size: 1em;
+    box-sizing: border-box; /* Include padding in width */
+}
+
+input[type="text"]::placeholder,
+input[type="password"]::placeholder {
+    color: #8c8c8c;
+}
+
+input[type="text"]:focus,
+input[type="password"]:focus {
+    outline: none;
+    background-color: #444; /* Slightly lighter on focus */
+}
+
+button[type="submit"] {
+    background-color: #e50914; /* Netflix red */
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    padding: 16px;
+    font-size: 1em;
+    font-weight: bold;
+    cursor: pointer;
+    margin-top: 24px; /* Space above button */
+    transition: background-color 0.2s ease;
+}
+
+button[type="submit"]:hover {
+    background-color: #f40612; /* Slightly brighter red on hover */
+}
+
+.messages {
+    list-style: none;
+    padding: 0;
+    margin-bottom: 20px;
+}
+
+.messages li {
+    background-color: #e50914; /* Red for error messages */
+    color: #fff;
+    padding: 10px;
+    border-radius: 4px;
+    margin-bottom: 10px;
+    font-size: 0.9em;
+}
+
+.messages li.success {
+    background-color: #4CAF50; /* Green for success messages */
+}
+
+p {
+    color: #8c8c8c;
+    font-size: 1em;
+    margin-top: 20px;
+    text-align: center; /* Center align like Netflix */
+}
+
+p a,
+main > a { /* Target the "Request CopyWatch Subscription" link */
+    color: #fff;
+    text-decoration: none;
+}
+
+p a:hover,
+main > a:hover {
+    text-decoration: underline;
+}
+
+/* Specific styling for the subscription request link */
+main > a {
+    display: block;
+    text-align: center;
+    margin-top: 20px;
+    font-size: 0.9em;
+    color: #b3b3b3; /* Lighter grey for this link */
+}
+
+main > a:hover {
+    color: #fff;
+}

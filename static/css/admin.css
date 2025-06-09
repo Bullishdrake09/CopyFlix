@@ -1,0 +1,229 @@
+/* General Admin Container */
+.admin-container {
+    max-width: 800px;
+    margin: 5rem auto;
+    padding: 3rem;
+    background: #1c1c1c;
+    border-radius: 8px;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
+    color: #f0f0f0; /* Default text color */
+}
+
+.admin-container h1 {
+    font-size: 3rem;
+    color: #E50914;
+    text-align: center;
+    margin-bottom: 3rem;
+}
+
+/* Form Groups */
+.form-group {
+    margin-bottom: 2rem;
+}
+
+.form-group label {
+    display: block;
+    font-size: 1.6rem;
+    margin-bottom: 0.8rem;
+    color: #ccc;
+}
+
+.form-group input[type="text"],
+.form-group input[type="number"],
+.form-group input[type="password"],
+.form-group select {
+    width: 100%;
+    padding: 1.2rem;
+    border: 1px solid #333;
+    border-radius: 4px;
+    background: #333;
+    color: #fff;
+    font-size: 1.6rem;
+    box-sizing: border-box; /* Ensures padding doesn't add to the width */
+}
+
+/* Radio Group for Title Action */
+.radio-group {
+    display: flex;
+    gap: 20px; /* Space between radio buttons */
+    margin-bottom: 1.5rem;
+}
+
+.radio-group input[type="radio"] {
+    display: none; /* Hide default radio button */
+}
+
+.radio-group label {
+    display: inline-block;
+    padding: 1rem 1.5rem;
+    border: 1px solid #E50914;
+    border-radius: 4px;
+    cursor: pointer;
+    background-color: #333;
+    color: white;
+    font-size: 1.6rem;
+    transition: background-color 0.3s ease, border-color 0.3s ease;
+}
+
+.radio-group input[type="radio"]:checked + label {
+    background-color: #E50914;
+    border-color: #E50914;
+    color: white;
+}
+
+.radio-group label:hover {
+    background-color: #444;
+}
+
+
+/* Custom File Upload Button Styling */
+.file-upload-group {
+    margin-bottom: 2rem;
+    display: flex; /* Use flexbox to align button and filename */
+    flex-direction: column; /* Stack label and filename */
+}
+
+.file-upload-group label {
+    margin-bottom: 0.8rem; /* Space between label and custom button */
+}
+
+.custom-file-upload {
+    border: 1px solid #E50914; /* Netflix red border */
+    display: inline-block;
+    padding: 1rem 1.5rem;
+    cursor: pointer;
+    background-color: #E50914; /* Netflix red background */
+    color: white;
+    border-radius: 4px;
+    font-size: 1.6rem;
+    text-align: center;
+    transition: background-color 0.3s ease;
+    width: fit-content; /* Make button fit content */
+    margin-bottom: 1rem; /* Space between button and filename display */
+}
+
+.custom-file-upload:hover {
+    background-color: #F40612; /* Slightly darker red on hover */
+}
+
+/* Hide the actual file input */
+.form-group input[type="file"] {
+    display: none; /* Hide the native file input */
+}
+
+.file-name-display {
+    font-size: 1.4rem;
+    color: #aaa;
+    margin-top: 0.5rem; /* Space above filename */
+}
+
+.filename-hint {
+    font-size: 1.3rem;
+    color: #777;
+    margin-top: 0.5rem;
+    font-style: italic;
+}
+
+
+/* Submit Button */
+.nf-flat-button-play {
+    width: 100%;
+    padding: 1.5rem;
+    font-size: 1.8rem;
+    font-weight: 700;
+    margin-top: 2rem;
+    background-color: #E50914; /* Ensure consistent button style */
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.nf-flat-button-play:hover {
+    background-color: #F40612;
+}
+
+/* Flash messages */
+.flashes {
+    list-style: none;
+    padding: 1rem 0;
+    margin-bottom: 2rem;
+    text-align: center;
+    border-radius: 5px;
+}
+
+.flashes li {
+    font-size: 1.6rem;
+    padding: 1rem;
+    margin-bottom: 1rem;
+    border-radius: 4px;
+}
+
+.flashes li.error {
+    background-color: #ff3333;
+    color: white;
+}
+
+.flashes li.success {
+    background-color: #4CAF50;
+    color: white;
+}
+
+.flashes li.info {
+    background-color: #007bff; /* Blue for info messages */
+    color: white;
+}
+
+/* Uploaded Content List */
+.uploaded-content-list {
+    margin-top: 5rem;
+    padding-top: 3rem;
+    border-top: 1px solid #333;
+}
+
+.uploaded-content-list h2 {
+    font-size: 2.4rem;
+    margin-bottom: 2rem;
+    color: #ccc;
+}
+
+.uploaded-content-list ul {
+    list-style: none;
+    padding: 0;
+}
+
+.uploaded-content-list li {
+    font-size: 1.5rem;
+    color: #aaa;
+    padding: 0.5rem 0;
+    border-bottom: 1px dotted #222;
+}
+
+.uploaded-content-list li:last-child {
+    border-bottom: none;
+}
+
+/* Login Page Specific Styles */
+.login-container {
+    max-width: 500px; /* Make login form a bit narrower */
+    margin-top: 10rem;
+}
+
+.login-form {
+    padding: 2rem;
+    background: #2a2a2a;
+    border-radius: 8px;
+}
+
+.nav-link.logout-btn {
+    background-color: #E50914;
+    color: white;
+    padding: 0.8rem 1.5rem;
+    border-radius: 4px;
+    transition: background-color 0.3s ease;
+}
+
+.nav-link.logout-btn:hover {
+    background-color: #F40612;
+}

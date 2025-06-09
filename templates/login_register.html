@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% if action=='login' %}Login{% else %}Register{% endif %}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/subscriptions.css') }}">
+</head>
+<body>
+    <main>
+        <h1>{% if action=='login' %}Login{% else %}Register{% endif %}</h1>
+        {% with messages = get_flashed_messages(with_categories=true) %}
+          {% if messages %}<ul>{% for cat,msg in messages %}<li class="{{cat}}">{{msg}}</li>{% endfor %}</ul>{% endif %}
+        {% endwith %}
+        <form method="POST">
+            <label>Username:<input type="text" name="username" required></label>
+            <label>Password:<input type="password" name="password" required></label>
+            <button type="submit">{% if action=='login' %}Login{% else %}Register{% endif %}</button>
+        </form>
+        {% if action=='login' %}
+        <a href="{{ url_for('request_subscription') }}">Request CopyWatch Subscription</a>
+        {% endif %}
+        {% if action=='login' %}<p>Don't have an account? <a href="{{ url_for('register') }}">Register here</a>.</p>{% else %}<p>Already have an account? <a href="{{ url_for('login') }}">Login here</a>.</p>{% endif %}
+    </main>
+</body>
+</html>

@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CopyFlix Admin</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/admin.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <header class="main-header" role="navigation">
+        <div class="logo" id="logo">CopyFlix Admin</div>
+        <nav class="nav">
+            <a href="{{ url_for('index') }}" class="nav-link">Home</a>
+            <a href="{{ url_for('admin') }}" class="nav-link active">Admin</a>
+            <a href="{{ url_for('admin_logout') }}" class="nav-link logout-btn">Logout</a>
+        </nav>
+    </header>
+
+    <main class="admin-container">
+        <h1>Upload New Content</h1>
+
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                <ul class="flashes">
+                {% for category, message in messages %}
+                    <li class="{{ category }}">{{ message }}</li>
+                {% endfor %}
+                </ul>
+            {% endif %}
+        {% endwith %}
+
+        <form method="POST" enctype="multipart/form-data" class="upload-form">
+            <div class="form-group">
+                <label>Choose Title Action:</label>
+                <div class="radio-group">
+                    <input type="radio" id="action_new" name="title_action" value="new" checked>
+                    <label for="action_new">Add New Title</label>
+                    <input type="radio" id="action_existing" name="title_action" value="existing">
+                    <label for="action_existing">Select Existing Title</label>
+                </div>
+            </div>
+
+            <div class="form-group" id="new_title_input">
+                <label for="new_title_name">New Title Name:</label>
+                <input type="text" id="new_title_name" name="new_title_name" placeholder="e.g., Breaking Bad, The Matrix">
+            </div>
+
+            <div class="form-group" id="existing_title_select" style="display: none;">
+                <label for="existing_title_slug">Select Existing Title:</label>
+                <select id="existing_title_slug" name="existing_title_slug">
+                    <option value="">--Select a Title--</option>
+                    </select>
+            </div>
+
+            <div class="form-group">
+                <label for="category">Category:</label>
+                <select id="category" name="category" required>
+                    <option value="">--Select a Category--</option>
+                    <option value="trending">Trending</option>
+                    <option value="comedies">Comedies</option>
+                    <option value="action">Action</option>
+                    <option value="drama">Drama</option>
+                    <option value="sci-fi">Sci-Fi</option>
+                    <option value="horror">Horror</option>
+                    </select>
+            </div>
+
+            <div class="form-group">
+                <label for="content_type">Content Type:</label>
+                <select id="content_type" name="content_type" required>
+                    <option value="">--Select Type--</option>
+                    <option value="movie">Movie</option>
+                    <option value="show">TV Show Episode</option>
+                </select>
+            </div>
+
+            <div class="form-group season-episode-group" style="display: none;">
+                <label for="season">Season (for Shows):</label>
+                <input type="number" id="season" name="season" min="1" placeholder="e.g., 1">
+            </div>
+
+            <div class="form-group season-episode-group" style="display: none;">
+                <label for="episode">Episode (for Shows):</label>
+                <input type="number" id="episode" name="episode" min="1" placeholder="e.g., 5">
+            </div>
+
+            <div class="form-group file-upload-group">
+                <label for="video_file" class="custom-file-upload">
+                    Upload Video File (.mp4, .mov, etc.)
+                </label>
+                <input type="file" id="video_file" name="video_file" accept="video/*" required>
+                <span id="video-file-name" class="file-name-display">No file chosen</span>
+                <p class="filename-hint" id="video-filename-hint"></p>
+            </div>
+
+            <div class="form-group file-upload-group">
+                <label for="thumbnail_file" class="custom-file-upload">
+                    Upload Thumbnail Image (.jpg, .png, etc.)
+                </label>
+                <input type="file" id="thumbnail_file" name="thumbnail_file" accept="image/*" required>
+                <span id="thumbnail-file-name" class="file-name-display">No file chosen</span>
+                <p class="filename-hint" id="thumbnail-filename-hint"></p>
+            </div>
+
+            <button type="submit" class="nf-flat-button nf-flat-button-play">Upload Content</button>
+        </form>
+
+        <section class="uploaded-content-list">
+            <h2>Currently Uploaded Content</h2>
+            <div id="content-list-display">
+                <p>Loading content...</p>
+            </div>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <div class="footer-links">
+            <a href="#">FAQ</a>
+            <a href="#">Help Center</a>
+            <a href="#">Terms of Use</a>
+            <a href="#">Privacy</a>
+        </div>
+        <div class="copyright">
+            © 2025 CopyFlix. All rights reserved.
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', async () => {
+            const contentListDisplay = document.getElementById('content-list-display');
+            const contentTypeSelect = document.getElementById('content_type');
+            const seasonEpisodeGroups = document.querySelectorAll('.season-episode-group');
+            const videoFileInput = document.getElementById('video_file');
+            const thumbnailFileInput = document.getElementById('thumbnail_file');
+            const videoFileNameDisplay = document.getElementById('video-file-name');
+            const thumbnailFileNameDisplay = document.getElementById('thumbnail-file-name');
+            const videoFilenameHint = document.getElementById('video-filename-hint');
+            const thumbnailFilenameHint = document.getElementById('thumbnail-filename-hint');
+
+            // Title selection elements
+            const newTitleRadio = document.getElementById('action_new');
+            const existingTitleRadio = document.getElementById('action_existing');
+            const newTitleInputDiv = document.getElementById('new_title_input');
+            const existingTitleSelectDiv = document.getElementById('existing_title_select');
+            const newTitleNameInput = document.getElementById('new_title_name');
+            const existingTitleSelect = document.getElementById('existing_title_slug');
+
+            // Store selected slug and title name for filename generation
+            let selectedTitleSlug = '';
+            let selectedTitleName = '';
+
+            // Function to fetch and display current content in the admin page
+            async function loadContentList() {
+                try {
+                    const response = await fetch('/api/content');
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! status: ${response.status}`);
+                    }
+                    const contentData = await response.json();
+                    
+                    let html = '<ul>';
+                    let hasContent = false;
+                    
+                    // Group content by slug for better readability
+                    const contentBySlug = {};
+                    for (const category in contentData) {
+                        contentData[category].forEach(item => {
+                            if (!contentBySlug[item.slug]) {
+                                contentBySlug[item.slug] = {
+                                    name: item.title,
+                                    type: item.type,
+                                    categories: {} // Store items by category within the slug
+                                };
+                            }
+                            if (!contentBySlug[item.slug].categories[category]) {
+                                contentBySlug[item.slug].categories[category] = [];
+                            }
+                            contentBySlug[item.slug].categories[category].push(item);
+                        });
+                    }
+
+                    for (const slug in contentBySlug) {
+                        hasContent = true;
+                        const contentItem = contentBySlug[slug];
+                        html += `<li><strong>${contentItem.name} (${contentItem.type === 'movie' ? 'Movie' : 'Show'})</strong>`;
+                        html += `<ul>`;
+                        for (const category in contentItem.categories) {
+                            html += `<li><em>Category: ${category.charAt(0).toUpperCase() + category.slice(1)}</em></li>`;
+                            contentItem.categories[category]
+                                .sort((a, b) => { // Sort episodes for display
+                                    if (a.type === 'show' && b.type === 'show') {
+                                        if (a.season !== b.season) return a.season - b.season;
+                                        return a.episode - b.episode;
+                                    }
+                                    return 0; // Don't sort if not shows
+                                })
+                                .forEach(item => {
+                                    let details = item.title;
+                                    if (item.type === 'show' && item.season && item.episode) {
+                                        details = `S${item.season.toString().padStart(2, '0')}E${item.episode.toString().padStart(2, '0')}`;
+                                    }
+                                    html += `<li>- ${details} (ID: ${item.id})</li>`;
+                                });
+                        }
+                        html += `</ul></li>`;
+                    }
+
+                    html += '</ul>';
+                    if (!hasContent) {
+                        html = '<p>No content uploaded yet.</p>';
+                    }
+                    contentListDisplay.innerHTML = html;
+
+                } catch (error) {
+                    console.error('Failed to load content for admin page:', error);
+                    contentListDisplay.innerHTML = '<p style="color:red;">Error loading content. Please check the server.</p>';
+                }
+            }
+
+            // Function to load existing titles into the dropdown
+            async function loadTitles() {
+                try {
+                    const response = await fetch('/api/titles');
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! status: ${response.status}`);
+                    }
+                    const titles = await response.json();
+                    existingTitleSelect.innerHTML = '<option value="">--Select a Title--</option>';
+                    titles.forEach(title => {
+                        const option = document.createElement('option');
+                        option.value = title.slug;
+                        option.textContent = title.name;
+                        existingTitleSelect.appendChild(option);
+                    });
+                } catch (error) {
+                    console.error('Failed to load titles:', error);
+                }
+            }
+
+            // --- Event Listeners and Initial Setup ---
+
+            // Call on load
+            loadContentList();
+            loadTitles();
+
+            // Toggle Title Input/Select
+            function toggleTitleInputs() {
+                if (newTitleRadio.checked) {
+                    newTitleInputDiv.style.display = 'block';
+                    newTitleNameInput.required = true;
+                    existingTitleSelectDiv.style.display = 'none';
+                    existingTitleSelect.required = false;
+                    selectedTitleSlug = ''; // Clear selected slug
+                    selectedTitleName = ''; // Clear selected name
+                } else {
+                    newTitleInputDiv.style.display = 'none';
+                    newTitleNameInput.required = false;
+                    existingTitleSelectDiv.style.display = 'block';
+                    existingTitleSelect.required = true;
+                    // Update slug/name based on current selection if any
+                    updateSelectedTitle();
+                }
+                updateFilenameHints(); // Update hints when title input changes
+            }
+
+            newTitleRadio.addEventListener('change', toggleTitleInputs);
+            existingTitleRadio.addEventListener('change', toggleTitleInputs);
+
+            // Initial state based on default checked radio
+            toggleTitleInputs();
+
+            // Update selectedTitleSlug/Name when new title is typed
+            newTitleNameInput.addEventListener('input', () => {
+                selectedTitleName = newTitleNameInput.value;
+                selectedTitleSlug = slugify(newTitleNameInput.value);
+                updateFilenameHints();
+            });
+
+            // Update selectedTitleSlug/Name when existing title is selected
+            existingTitleSelect.addEventListener('change', () => {
+                const selectedOption = existingTitleSelect.options[existingTitleSelect.selectedIndex];
+                selectedTitleSlug = selectedOption.value;
+                selectedTitleName = selectedOption.textContent;
+                updateFilenameHints();
+            });
+
+            // Toggle Season/Episode fields based on Content Type
+            contentTypeSelect.addEventListener('change', () => {
+                if (contentTypeSelect.value === 'show') {
+                    seasonEpisodeGroups.forEach(group => group.style.display = 'block');
+                    document.getElementById('season').required = true;
+                    document.getElementById('episode').required = true;
+                } else {
+                    seasonEpisodeGroups.forEach(group => group.style.display = 'none');
+                    document.getElementById('season').required = false;
+                    document.getElementById('episode').required = false;
+                    document.getElementById('season').value = '';
+                    document.getElementById('episode').value = '';
+                }
+                updateFilenameHints(); // Update hints when content type changes
+            });
+
+            // Update filename hints based on selections
+            function updateFilenameHints() {
+                const type = contentTypeSelect.value;
+                const season = document.getElementById('season').value;
+                const episode = document.getElementById('episode').value;
+                let baseName = '';
+
+                if (!selectedTitleSlug) {
+                    videoFilenameHint.textContent = 'Please choose or add a title first.';
+                    thumbnailFilenameHint.textContent = 'Please choose or add a title first.';
+                    return;
+                }
+
+                if (type === 'show') {
+                    if (season && episode) {
+                        baseName = `${selectedTitleSlug}_s${String(season).padStart(2, '0')}_e${String(episode).padStart(2, '0')}`;
+                    } else {
+                        baseName = `${selectedTitleSlug}_sXX_eYY`;
+                    }
+                } else if (type === 'movie') {
+                    baseName = selectedTitleSlug;
+                } else {
+                    baseName = 'Select content type...';
+                }
+
+                videoFilenameHint.textContent = `File will be saved as: ${baseName}.mp4 (or other video extension)`;
+                thumbnailFilenameHint.textContent = `File will be saved as: ${baseName}.jpg (or other image extension)`;
+            }
+
+            // Update file name display for actual selected file
+            videoFileInput.addEventListener('change', () => {
+                videoFileNameDisplay.textContent = videoFileInput.files.length > 0 ? videoFileInput.files[0].name : 'No file chosen';
+                updateFilenameHints(); // Also update hints just in case (e.g. extension changes)
+            });
+
+            thumbnailFileInput.addEventListener('change', () => {
+                thumbnailFileNameDisplay.textContent = thumbnailFileInput.files.length > 0 ? thumbnailFileInput.files[0].name : 'No file chosen';
+                updateFilenameHints(); // Also update hints just in case
+            });
+
+            // Update hints when season/episode change
+            document.getElementById('season').addEventListener('input', updateFilenameHints);
+            document.getElementById('episode').addEventListener('input', updateFilenameHints);
+
+            // Helper to slugify text (mirroring Python's slugify)
+            function slugify(text) {
+                return text.toLowerCase()
+                           .replace(/\s+/g, '_')     // Replace spaces with underscores
+                           .replace(/[^a-z0-9_]/g, '') // Remove non-alphanumeric except underscore
+                           .replace(/__+/g, '_')    // Replace multiple underscores with a single one
+                           .replace(/^_|_$/g, '');  // Remove leading/trailing underscores
+            }
+
+            // Function to update selectedTitleSlug/Name based on current radio selection
+            function updateSelectedTitle() {
+                if (newTitleRadio.checked) {
+                    selectedTitleName = newTitleNameInput.value;
+                    selectedTitleSlug = slugify(newTitleNameInput.value);
+                } else if (existingTitleSelect.value) {
+                    const selectedOption = existingTitleSelect.options[existingTitleSelect.selectedIndex];
+                    selectedTitleSlug = selectedOption.value;
+                    selectedTitleName = selectedOption.textContent;
+                } else {
+                    selectedTitleSlug = '';
+                    selectedTitleName = '';
+                }
+            }
+            // Ensure hints are updated initially and when relevant inputs change
+            updateSelectedTitle();
+            updateFilenameHints();
+        });
+    </script>
+</body>
+</html>

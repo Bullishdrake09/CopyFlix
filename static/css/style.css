@@ -1,0 +1,567 @@
+        /* Netflix Sans Font and Base Styles */
+        @font-face {
+            font-family: 'Netflix Sans';
+            font-weight: 100;
+            src: url(https://assets.nflxext.com/ffe/siteui/fonts/netflix-sans/v3/NetflixSans_W_Th.woff2) format('woff2');
+        }
+        @font-face {
+            font-family: 'Netflix Sans';
+            font-weight: 400;
+            src: url(https://assets.nflxext.com/ffe/siteui/fonts/netflix-sans/v3/NetflixSans_W_Rg.woff2) format('woff2');
+        }
+        @font-face {
+            font-family: 'Netflix Sans';
+            font-weight: 500;
+            src: url(https://assets.nflxext.com/ffe/siteui/fonts/netflix-sans/v3/NetflixSans_W_Md.woff2) format('woff2');
+        }
+        @font-face {
+            font-family: 'Netflix Sans';
+            font-weight: 700;
+            src: url(https://assets.nflxext.com/ffe/siteui/fonts/netflix-sans/v3/NetflixSans_W_Bd.woff2) format('woff2');
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html, body {
+            font-family: 'Netflix Sans', Helvetica Neue, Segoe UI, Roboto, Ubuntu, sans-serif;
+            background: #141414;
+            color: #fff;
+            font-size: 10px;
+            line-height: 1.2;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            height: 100%;
+            width: 100%;
+        }
+
+        /* Header */
+        .main-header {
+            position: sticky;
+            top: 0;
+            z-index: 10;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 1rem 3rem;
+            background: rgba(20, 20, 20, 0.9);
+            backdrop-filter: blur(5px);
+        }
+
+        .logo {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #E50914;
+            cursor: pointer;
+        }
+
+        .nav {
+            display: flex;
+            gap: 2rem;
+        }
+
+        .nav-link {
+            color: #fff;
+            text-decoration: none;
+            font-size: 1.4rem;
+            transition: color 0.3s;
+        }
+
+        .nav-link:hover {
+            color: #b3b3b3;
+        }
+
+        .user-controls button {
+            background: none;
+            border: none;
+            color: #fff;
+            font-size: 1.6rem;
+            margin-left: 1rem;
+            cursor: pointer;
+        }
+
+        /* Hero Section */
+        .billboard {
+            position: relative;
+            background-size: cover;
+            background-position: center;
+            height: 60vh;
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+            padding: 5rem 10rem;
+        }
+
+        .billboard-content {
+            max-width: 600px;
+        }
+
+        .billboard-title {
+            font-size: 4rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+        }
+
+        .billboard-subtitle {
+            font-size: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .nf-flat-button {
+            display: inline-block;
+            padding: 1rem 2.5rem;
+            font-size: 1.6rem;
+            font-weight: 500;
+            text-align: center;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .nf-flat-button-play {
+            background: #E50914;
+            color: #fff;
+        }
+
+        .nf-flat-button-play:hover {
+            background: #ff2a2a;
+        }
+
+        /* Content Sections */
+        .lolomo, .genres {
+            padding: 4rem 10rem;
+        }
+
+        .row-title {
+            font-size: 2.4rem;
+            margin-bottom: 2rem;
+        }
+
+        .row-container {
+            display: flex;
+            gap: 2rem;
+            overflow-x: auto;
+            padding-bottom: 1rem;
+        }
+
+        .box {
+            width: 300px;
+            position: relative;
+            flex-shrink: 0;
+            cursor: pointer;
+        }
+
+        .box img {
+            width: 100%;
+            height: auto;
+            border-radius: 4px;
+            transition: transform 0.3s;
+        }
+
+        .box:hover img {
+            transform: scale(1.05);
+        }
+
+        .title {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            background: rgba(0, 0, 0, 0.7);
+            width: 100%;
+            text-align: center;
+            font-size: 1.4rem;
+            padding: 0.5rem 0;
+        }
+
+        .genre-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .genre-tag {
+            padding: 0.5rem 1.2rem;
+            background: #222;
+            color: #fff;
+            font-size: 1.4rem;
+            border-radius: 2rem;
+            text-decoration: none;
+            transition: background 0.3s;
+        }
+
+        .genre-tag:hover {
+            background: #444;
+        }
+
+        /* Footer */
+        .footer {
+            padding: 3rem 10rem;
+            border-top: 1px solid #333;
+        }
+
+        .footer-links {
+            display: flex;
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .footer-links a {
+            color: #888;
+            font-size: 1.4rem;
+            text-decoration: none;
+        }
+
+        .footer-links a:hover {
+            color: #fff;
+        }
+
+        .copyright {
+            font-size: 1.2rem;
+            color: #555;
+        }
+
+        /* Video Player Styles */
+        .player {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: black;
+            display: none;
+            flex-direction: column;
+            justify-content: center;
+            z-index: 1000;
+        }
+
+        .video-wrapper {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        video {
+            width: 100%;
+            height: auto;
+            max-height: 100%;
+        }
+
+        /* Buffering Indicator */
+        #loadingSpinner {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 50px;
+            height: 50px;
+            border: 5px solid rgba(255, 255, 255, 0.3);
+            border-top: 5px solid #E50914; /* Netflix Red */
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            display: none; /* Hidden by default */
+            z-index: 100; /* Above video */
+        }
+
+        @keyframes spin {
+            0% { transform: translate(-50%, -50%) rotate(0deg); }
+            100% { transform: translate(-50%, -50%) rotate(360deg); }
+        }
+
+
+        .controls-top, .controls-bottom {
+            position: absolute;
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 20px;
+        }
+
+        .controls-top {
+            top: 20px;
+        }
+
+        .controls-bottom {
+            bottom: 60px;
+        }
+
+        .icon {
+            width: 24px;
+            height: 24px;
+            fill: white;
+            cursor: pointer;
+        }
+
+        .flag {
+            width: 24px;
+            height: 24px;
+            stroke: white;
+            stroke-width: 2;
+            fill: none;
+            cursor: pointer;
+        }
+
+        .progress-container {
+            position: absolute;
+            bottom: 50px;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: rgba(255,255,255,0.2);
+            cursor: pointer;
+        }
+
+        .progress {
+            width: 0%;
+            height: 100%;
+            background: #aaa;
+        }
+
+        .thumb {
+            position: absolute;
+            top: -4px;
+            left: 0%;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: red;
+            transform: translateX(-50%);
+        }
+
+        .time {
+            position: absolute;
+            bottom: 52px;
+            right: 20px;
+            font-size: 12px;
+        }
+
+        .controls-middle {
+            position: absolute;
+            bottom: 10px;
+            left: 20px;
+            right: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .left-controls, .right-controls {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .center-title {
+            position: absolute;
+            bottom: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 14px;
+        }
+
+        #overlayIcon {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(1);
+            font-size: 64px;
+            opacity: 0;
+            transition: opacity 0.3s ease, transform 0.3s ease;
+            pointer-events: none;
+        }
+
+        #overlayIcon.show {
+            opacity: 1;
+            transform: translate(-50%, -50%) scale(1.2);
+        }
+
+        /* Subtitle confirmation message style */
+        #subtitleConfirmation {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(0, 0, 0, 0.7);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 5px;
+            font-size: 1.6rem;
+            opacity: 0;
+            transition: opacity 0.5s ease-out;
+            z-index: 101; /* Above spinner, below overlay icon */
+        }
+
+        #subtitleConfirmation.show {
+            opacity: 1;
+        }
+
+        input[type="file"] {
+            display: none;
+        }
+
+        .back-button {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            z-index: 1001;
+            background: rgba(0,0,0,0.5);
+            border: none;
+            padding: 10px;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .back-button svg {
+            width: 24px;
+            height: 24px;
+        }
+
+        .next-episode-btn {
+            position: absolute;
+            bottom: 120px;
+            right: 20px;
+            background: #E50914;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            font-size: 1.4rem;
+            border-radius: 4px;
+            cursor: pointer;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease-in-out;
+            z-index: 100;
+        }
+
+        .next-episode-btn.show {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .volume-container {
+            width: 80px;
+            height: 4px;
+            background: rgba(255,255,255,0.2);
+            cursor: pointer;
+            position: relative;
+        }
+
+        .volume-bar {
+            height: 100%;
+            width: 100%;
+            background: #aaa;
+        }
+
+        .volume-thumb {
+            position: absolute;
+            top: -4px;
+            left: 100%;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: red;
+            transform: translateX(-50%);
+        }
+
+        /* Subtitle display area - MODIFIED */
+        #subtitleDisplay {
+            position: absolute;
+            bottom: 90px; /* Adjust based on your control bar's height */
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80%; /* Or a fixed width */
+            text-align: center;
+            /* REMOVED: background: rgba(0, 0, 0, 0.7); */ 
+            color: white;
+            padding: 8px 15px; /* Keep padding for spacing */
+            border-radius: 6px; /* Keep border-radius for styling */
+            font-size: 2.2rem;
+            line-height: 1.4;
+            max-height: 100px;
+            overflow: hidden;
+            pointer-events: none;
+            z-index: 90;
+            
+            opacity: 0;
+            transition: opacity 0.2s ease-in-out;
+
+            /* NEW/MODIFIED: Text Shadow for Border Effect */
+            text-shadow: 
+                -1px -1px 0 #000,  
+                 1px -1px 0 #000,
+                -1px  1px 0 #000,
+                 1px  1px 0 #000,
+                -2px 0px 0 #000, /* Thicker border */
+                 2px 0px 0 #000,
+                 0px -2px 0 #000,
+                 0px 2px 0 #000;
+        }
+        .mark {
+            background-color: yellow;
+            color: black;
+            padding: 2px 4px;
+            border-radius: 3px;
+        }
+/*
+ * Styles for the page search input field, updated for a Netflix-like theme.
+ * This CSS aims to make the input bar look stylish and fit a darker, sleek aesthetic.
+ */
+#pageSearchInput {
+    /* Basic styling for width, padding, and font */
+    width: 100%; /* Make it take full width of its container */
+    padding: 0.75rem 1rem; /* Generous padding inside the input for text */
+    font-family: 'Inter', sans-serif; /* Keep the Inter font for a clean, modern look */
+    font-size: 1rem; /* Readable font size */
+    line-height: 1.5; /* Good line height for text */
+    color: #e5e5e5; /* Light text color for contrast on dark background */
+
+    /* Background and border for a dark, sleek feel (Netflix-like) */
+    background-color: #333333; /* Dark background color */
+    border: 1px solid #444444; /* Slightly lighter dark border */
+    border-radius: 4px; /* Slightly rounded corners, less extreme than pill shape */
+
+    /* Subtle shadow for depth, common in dark themes */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* A bit more noticeable shadow on dark background */
+
+    /* Transition for smooth effects on hover/focus */
+    transition: all 0.2s ease-in-out; /* Smooth transition for property changes */
+
+    /* Placeholder text styling for dark themes */
+    &::placeholder {
+        color: #a0a0a0; /* Muted light gray for placeholder text */
+        opacity: 1; /* Ensure full opacity in Firefox */
+    }
+
+    /* Focus state for user interaction, inspired by Netflix highlights */
+    &:focus {
+        outline: none; /* Remove default outline */
+        border-color: #e50914; /* Netflix red border on focus */
+        box-shadow: 0 0 0 3px rgba(229, 9, 20, 0.5); /* Soft red glow effect on focus */
+        background-color: #444444; /* Slightly lighter background when focused */
+    }
+
+    /* Hover state for user feedback on dark background */
+    &:hover {
+        border-color: #666666; /* Slightly lighter border on hover */
+    }
+}
+
+.user-controls {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+.username {
+  font-size: 1.4rem;
+  color: #fff;
+}
+.user-controls .nav-link {
+  font-size: 1.4rem;
+}
